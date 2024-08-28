@@ -9,15 +9,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-
 
 @Entity
 @Table(name = "tb_product")
-public class Product implements Serializable{
+public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,12 +26,16 @@ public class Product implements Serializable{
 	private String description;
 	private Double price;
 	private String imgUrl;
-	
-	@Transient
-	private Set<Category> categories = new HashSet<>(); // utiliza-se o set para não haver repetição de mais de uma categoria
-	
+
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", // Anotação que associa as chaves estrangeiras nas tabelas Product e Category
+	joinColumns = @JoinColumn(name = "product_id"),//(nome da chave estrangeira no banco de dados)
+	inverseJoinColumns = @JoinColumn(name = "category_id"))// Define a chave estrangeira da outra entidade
+	private Set<Category> categories = new HashSet<>(); // utiliza-se o set para não haver repetição de mais de uma
+														// categoria
+
 	public Product() {
-		
+
 	}
 
 	public Product(Long id, String name, String description, Double price, String imgUrl) {
