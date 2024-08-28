@@ -29,7 +29,7 @@ public class Order implements Serializable{
 	
 	private Integer orderStatus;
 	
-	@ManyToOne// inrtui para chave estrangeira
+	@ManyToOne// converte para chave estrangeira
 	@JoinColumn(name = "client_id")// nome que será dado na tabela do sql
 	private User client;
 	
