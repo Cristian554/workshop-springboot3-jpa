@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.educandoweb.course.enitties.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -15,8 +16,8 @@ public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
-	private OrderItemPK id; // primeiro atributo é o identificador com a chave primária
-	
+	private OrderItemPK id = new OrderItemPK(); // primeiro atributo é o identificador com a chave primária
+	// sempre que for intanciar uma classe auxiliar com id composto instanciala
 	private Integer quantity;
 	private Double price;
 	
@@ -31,7 +32,7 @@ public class OrderItem implements Serializable {
 		this.quantity = quantity;
 		this.price = price;
 	}
-	
+	@JsonIgnore// anotação para encerrar o lopping 
 	public Order getOrder() {
 		return id.getOrder();
 	}
