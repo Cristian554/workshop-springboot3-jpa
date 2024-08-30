@@ -89,23 +89,29 @@ public class Order implements Serializable{
 	public void setClient(User client) {
 		this.client = client;
 	}
+    public Payment getPayment() {
+		return payment;
+	}
+    public Set<OrderItem> getItems () {
+		return items;
+	}
+	
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+	
+	public Double getTotal() {
+		double sum = 0.0;
+		for(OrderItem x : items) { // percorre a lista de itens somando os items
+			sum += x.getsubtotal();
+		}
+		return sum;
+	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-	public Set<OrderItem> getItems () {
-		return items;
-	}
-	
-    public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
