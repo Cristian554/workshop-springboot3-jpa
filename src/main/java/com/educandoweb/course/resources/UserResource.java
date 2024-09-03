@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,4 +41,10 @@ public class UserResource {
 		URI uri  = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj); // Para utilizar cód. 201 postman necessário usar o .created(URI) endereço de criação do cabeçalho
 	}
+	@DeleteMapping(value = "/{id}") // Anotação para deletar
+	public ResponseEntity<Void> delete (@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();// No.content quando é uma respota sem corpo
+	}
+	
 }
