@@ -12,6 +12,8 @@ import com.educandoweb.course.repositories.UserRepository;
 import com.educandoweb.course.services.exceptions.DataBaseException;
 import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service // Anotation utilizado para registrar serviços
 public class UserService {
 
@@ -32,22 +34,28 @@ public class UserService {
 		return repository.save(obj);
 	}
 
-	public void delete(Long id){
-	    try {
-	        if(!repository.existsById(id)) throw new ResourceNotFoundException(id);
-	        repository.deleteById(id);
-	    } catch (ResourceNotFoundException e){
-	        throw new ResourceNotFoundException(id);
-	    } catch(DataIntegrityViolationException e) {
-	    	throw new DataBaseException(e.getMessage());
-	    }
+	public void delete(Long id) {
+		try {
+			if (!repository.existsById(id))
+				throw new ResourceNotFoundException(id);
+			repository.deleteById(id);
+		} catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataBaseException(e.getMessage());
+
+		}
 	}
 
 	public User update(Long id, User obj) {
-		User entity = repository.getReferenceById(id); // getRefe = deixa monitorado com JPA para depois enviar para o
-														// banco de dados
-		updateData(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = repository.getReferenceById(id); // getRefe = deixa monitorado com JPA para depois enviar para
+															// o
+			// banco de dados
+			updateData(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {			
+		} throw new ResourceNotFoundException(id);
 	}
 
 	private void updateData(User entity, User obj) {
