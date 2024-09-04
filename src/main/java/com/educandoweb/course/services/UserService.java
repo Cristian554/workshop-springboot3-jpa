@@ -1,4 +1,4 @@
-package com.educandoweb.course.servicesd;
+package com.educandoweb.course.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.enitties.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 @Service // Anotation utilizado para registrar serviços
 public class UserService {
@@ -20,9 +21,9 @@ public class UserService {
 
 	}
 
-	public User findById(Long Id) {
-		Optional<User> obj = repository.findById(Id);
-		return obj.get();
+	public User findById(Long id) {
+		Optional<User> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public User insert(User obj) { // Salva o usuário
